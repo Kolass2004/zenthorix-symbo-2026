@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/firebase/server";
 import { extractUPIFromImage } from "@/lib/gemini";
 import { sendTicketEmail, generateTicketId } from "@/lib/email";
-import { appendToGoogleSheet } from "@/lib/google-docs";
+import { appendToGoogleSheet, uploadImageToDrive } from "@/lib/google-docs";
 
 export async function POST(req: Request) {
   try {
@@ -55,8 +55,11 @@ export async function POST(req: Request) {
     // 4. Save to Firestore
     await db.collection("registrations").add(registrationData);
 
+    // 4.5. Upload image to Google Drive
+    const imageUrl = await uploadImageToDrive(screenshot, `${ticketId}_Payment.jpg`);
+
     // 5. Save to Google Sheets
-    // Columns: Timestamp, Ticket ID, Name, Email, College, Phone, Department, Year, Pair 1, Pair 2, Pair 3, GreenWave, UPI
+    // Columns: Timestamp, Ticket ID, Name, Email, College, Phone, Department, Year, Pair 1, Pair 2, Pair 3, GreenWave, UPI, ScreenshotUrl
     await appendToGoogleSheet([
       registrationData.timestamp,
       ticketId,
@@ -70,7 +73,8 @@ export async function POST(req: Request) {
       eventPair2,
       eventPair3,
       greenWave,
-      upiId
+      upiId,
+      imageUrl || "Upload Failed"
     ]);
 
     // 6. Send Email with Ticket QR
