@@ -78,11 +78,11 @@ export const appendToGoogleSheet = async (values: string[]) => {
     if (!getRes.data.values || getRes.data.values.length === 0) {
       await sheets.spreadsheets.values.append({
         spreadsheetId: SPREADSHEET_ID,
-        range: "Sheet1!A:N",
+        range: "Sheet1!A:O",
         valueInputOption: "USER_ENTERED",
         requestBody: {
           values: [
-            ["Timestamp", "Ticket ID", "Name", "Email", "College Name", "Phone No", "Department", "Year", "Event Pair 1", "Event Pair 2", "Event Pair 3", "GreenWave", "UPI ID", "Screenshot Link"]
+            ["Timestamp", "Ticket ID", "Name", "Email", "College Name", "Phone No", "Department", "Year", "Event Pair 1", "Event Pair 2", "Event Pair 3", "GreenWave", "UPI ID", "Payment Provider", "Screenshot Link"]
           ],
         },
       });
@@ -90,7 +90,7 @@ export const appendToGoogleSheet = async (values: string[]) => {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: "Sheet1!A:N", // Append to columns A to N
+      range: "Sheet1!A:O", // Append to columns A to O
       valueInputOption: "USER_ENTERED",
       requestBody: {
         values: [values],

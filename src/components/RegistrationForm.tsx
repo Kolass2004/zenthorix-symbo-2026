@@ -106,6 +106,23 @@ export default function RegistrationForm() {
   return (
     <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl">
       <Toaster position="top-center" />
+
+      {/* Event Instructions / Details */}
+      <div className="bg-red-950/30 border border-red-900/50 rounded-2xl p-6 mb-8 text-neutral-300 space-y-3">
+        <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+          <svg className="w-6 h-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Important Instructions
+        </h3>
+        <ul className="list-disc list-inside space-y-2 ml-2 text-sm md:text-base">
+          <li>Food, refreshments, and a registration kit will be provided for all participants.</li>
+          <li>The registration fee is <strong className="text-white">₹200 per head</strong>.</li>
+          <li>Participants must bring their college ID card for verification.</li>
+          <li>Participants should follow the instructions of the event coordinators and maintain discipline.</li>
+        </ul>
+      </div>
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
         
         {/* Personal Details Section */}
@@ -245,12 +262,12 @@ export default function RegistrationForm() {
           </div>
 
           <div className="flex flex-col md:flex-row gap-8 items-start">
-            <div className="bg-black border border-neutral-800 rounded-2xl p-6 w-full md:w-1/2 flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex outline outline-4 outline-black items-center justify-center text-2xl font-bold mb-4 z-10 -mb-8">B</div>
+            <div className=" border border-neutral-800 rounded-2xl p-6 w-full md:w-1/2 flex flex-col items-center justify-center text-center">
+              {/* <div className="w-16 h-16 bg-blue-600 rounded-full flex outline outline-4 outline-black items-center justify-center text-2xl font-bold mb-4 z-10 -mb-8">B</div> */}
               <div className="bg-white p-4 rounded-xl shadow-lg pt-10">
                 <h3 className="text-black font-semibold text-lg mb-2">Bharath</h3>
                 <img 
-                  src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=ramram58609@okicici%26pn=Bharath%26cu=INR" 
+                  src="/payment-qr.jpg" 
                   alt="Payment QR" 
                   className="w-48 h-48 object-cover rounded shadow-sm mx-auto"
                 />
