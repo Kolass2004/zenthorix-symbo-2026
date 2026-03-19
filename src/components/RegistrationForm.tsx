@@ -104,11 +104,11 @@ export default function RegistrationForm() {
   };
 
   return (
-    <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl">
+    <div className="bg-neutral-900/90 border border-neutral-800/80 rounded-2xl md:rounded-3xl p-5 md:p-8 shadow-2xl backdrop-blur-sm">
       <Toaster position="top-center" />
 
       {/* Event Instructions / Details */}
-      <div className="bg-red-950/30 border border-red-900/50 rounded-2xl p-6 mb-8 text-neutral-300 space-y-3">
+      <div className="bg-red-950/30 border border-red-900/50 rounded-xl md:rounded-2xl p-5 md:p-6 mb-6 md:mb-8 text-neutral-300 space-y-2 md:space-y-3">
         <h3 className="text-xl font-bold text-white mb-4 flex items-center">
           <svg className="w-6 h-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -199,12 +199,12 @@ export default function RegistrationForm() {
         {/* Events Section */}
         <section className="space-y-6">
            <div className="border-b border-neutral-800 pb-4">
-            <h2 className="text-2xl font-semibold text-white">Event Registration</h2>
-            <p className="text-neutral-400 text-sm mt-1">Select the events you want to participate in.</p>
+            <h2 className="text-xl md:text-2xl font-semibold text-white">Event Registration</h2>
+            <p className="text-neutral-400 text-xs md:text-sm mt-1">Select the events you want to participate in.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-black/50 p-6 rounded-xl border border-neutral-800/50">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+            <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
               <label className="text-sm font-medium text-neutral-300 block mb-4">Event Pair 1 *</label>
               <div className="space-y-3">
                 {["Paper Presentation", "E-Sports", "None"].map((opt) => (
@@ -216,37 +216,37 @@ export default function RegistrationForm() {
               </div>
             </div>
 
-            <div className="bg-black/50 p-6 rounded-xl border border-neutral-800/50">
-              <label className="text-sm font-medium text-neutral-300 block mb-4">Event Pair 2 *</label>
-              <div className="space-y-3">
+            <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
+              <label className="text-sm font-medium text-neutral-300 block mb-3 md:mb-4">Event Pair 2 *</label>
+              <div className="space-y-2 md:space-y-3">
                 {["Technical quiz", "Meme creation", "None"].map((opt) => (
                   <label key={opt} className="flex items-center space-x-3 cursor-pointer group">
-                    <input type="radio" value={opt} {...register("eventPair2")} className="w-4 h-4 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
-                    <span className="text-neutral-300 group-hover:text-white transition-colors">{opt}</span>
+                    <input type="radio" value={opt} {...register("eventPair2")} className="w-4 h-4 md:w-5 md:h-5 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
+                    <span className="text-neutral-300 md:text-base text-sm group-hover:text-white transition-colors">{opt}</span>
                   </label>
                 ))}
               </div>
             </div>
 
-            <div className="bg-black/50 p-6 rounded-xl border border-neutral-800/50">
-              <label className="text-sm font-medium text-neutral-300 block mb-4">Event Pair 3 *</label>
-              <div className="space-y-3">
+            <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
+              <label className="text-sm font-medium text-neutral-300 block mb-3 md:mb-4">Event Pair 3 *</label>
+              <div className="space-y-2 md:space-y-3">
                 {["Code debug", "Connection", "None"].map((opt) => (
                   <label key={opt} className="flex items-center space-x-3 cursor-pointer group">
-                    <input type="radio" value={opt} {...register("eventPair3")} className="w-4 h-4 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
-                    <span className="text-neutral-300 group-hover:text-white transition-colors">{opt}</span>
+                    <input type="radio" value={opt} {...register("eventPair3")} className="w-4 h-4 md:w-5 md:h-5 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
+                    <span className="text-neutral-300 md:text-base text-sm group-hover:text-white transition-colors">{opt}</span>
                   </label>
                 ))}
               </div>
             </div>
 
-            <div className="bg-black/50 p-6 rounded-xl border border-neutral-800/50">
-              <label className="text-sm font-medium text-neutral-300 block mb-4">GreenWave (EVS Awareness) *</label>
-              <div className="space-y-3">
+            <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
+              <label className="text-sm font-medium text-neutral-300 block mb-3 md:mb-4">GreenWave (EVS Awareness) *</label>
+              <div className="space-y-2 md:space-y-3">
                 {["Yes", "No"].map((opt) => (
                   <label key={opt} className="flex items-center space-x-3 cursor-pointer group">
-                    <input type="radio" value={opt} {...register("greenWave")} className="w-4 h-4 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
-                    <span className="text-neutral-300 group-hover:text-white transition-colors">{opt}</span>
+                    <input type="radio" value={opt} {...register("greenWave")} className="w-4 h-4 md:w-5 md:h-5 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
+                    <span className="text-neutral-300 md:text-base text-sm group-hover:text-white transition-colors">{opt}</span>
                   </label>
                 ))}
               </div>
