@@ -258,7 +258,7 @@ export default function RegistrationForm() {
         <section className="space-y-6">
           <div className="border-b border-neutral-800 pb-4">
             <h2 className="text-2xl font-semibold text-white">Payment & Verification</h2>
-            <p className="text-neutral-400 text-sm mt-1">Scan the QR Code to pay ₹250 (Example Amount) and upload your successful transaction screenshot.</p>
+            <p className="text-neutral-400 text-sm mt-1">Scan the QR Code to pay ₹200 and upload your successful transaction screenshot.</p>
           </div>
 
           <div className="flex flex-col md:flex-row gap-8 items-start">
