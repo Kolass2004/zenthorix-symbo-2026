@@ -15,9 +15,9 @@ const formSchema = z.object({
   year: z.enum(["I-YEAR", "II-YEAR", "III-YEAR", "IV-year"], {
     message: "Please select your year",
   }),
-  eventPair1: z.enum(["Paper Pulse", "Elite Gamerz", "None"]),
-  eventPair2: z.enum(["Quiztronix", "Roast Battle", "None"]),
-  eventPair3: z.enum(["404 Error Code", "matching matrix", "None"]),
+  eventPair1: z.enum(["Paper Pulse", "Roast Battle", "None"]),
+  eventPair2: z.enum(["Quiztronix", "Matching Matrix", "None"]),
+  eventPair3: z.enum(["404 Error Code", "Elite Gamerz", "None"]),
   greenWave: z.enum(["Yes", "No"]),
 });
 
@@ -207,7 +207,7 @@ export default function RegistrationForm() {
             <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
               <label className="text-sm font-medium text-neutral-300 block mb-4">Event Pair 1 *</label>
               <div className="space-y-3">
-                {["Paper Pulse", "Elite Gamerz", "None"].map((opt) => (
+                {["Paper Pulse", "Roast Battle", "None"].map((opt) => (
                   <label key={opt} className="flex items-center space-x-3 cursor-pointer group">
                     <input type="radio" value={opt} {...register("eventPair1")} className="w-4 h-4 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
                     <span className="text-neutral-300 group-hover:text-white transition-colors">{opt}</span>
@@ -219,7 +219,7 @@ export default function RegistrationForm() {
             <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
               <label className="text-sm font-medium text-neutral-300 block mb-3 md:mb-4">Event Pair 2 *</label>
               <div className="space-y-2 md:space-y-3">
-                {["Quiztronix", "Roast Battle", "None"].map((opt) => (
+                {["Quiztronix", "matching matrix", "None"].map((opt) => (
                   <label key={opt} className="flex items-center space-x-3 cursor-pointer group">
                     <input type="radio" value={opt} {...register("eventPair2")} className="w-4 h-4 md:w-5 md:h-5 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
                     <span className="text-neutral-300 md:text-base text-sm group-hover:text-white transition-colors">{opt}</span>
@@ -231,7 +231,7 @@ export default function RegistrationForm() {
             <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
               <label className="text-sm font-medium text-neutral-300 block mb-3 md:mb-4">Event Pair 3 *</label>
               <div className="space-y-2 md:space-y-3">
-                {["404 Error Code", "matching matrix", "None"].map((opt) => (
+                {["404 Error Code", "Elite Gamerz", "None"].map((opt) => (
                   <label key={opt} className="flex items-center space-x-3 cursor-pointer group">
                     <input type="radio" value={opt} {...register("eventPair3")} className="w-4 h-4 md:w-5 md:h-5 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
                     <span className="text-neutral-300 md:text-base text-sm group-hover:text-white transition-colors">{opt}</span>
