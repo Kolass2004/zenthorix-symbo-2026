@@ -79,7 +79,8 @@ export default function OfflineRegistrationForm() {
   };
 
   return (
-    <div className="bg-neutral-900/90 border border-neutral-800/80 rounded-2xl md:rounded-3xl p-5 md:p-8 shadow-2xl backdrop-blur-sm">
+    <>
+      <div className="bg-neutral-900/90 border border-neutral-800/80 rounded-2xl md:rounded-3xl p-5 md:p-8 shadow-2xl backdrop-blur-sm">
       <Toaster position="top-center" />
 
       {/* Event Instructions / Details */}
@@ -247,8 +248,10 @@ export default function OfflineRegistrationForm() {
             ) : "Submit Registration"}
           </button>
         </div>
+      </form>
+    </div>
 
-        {/* Modal Overlay */}
+    {/* Modal Overlay */}
         {modalState !== 'idle' && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
             <div className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onClick={() => modalState === 'error' && setModalState('idle')}></div>
@@ -300,7 +303,6 @@ export default function OfflineRegistrationForm() {
             </div>
           </div>
         )}
-      </form>
-    </div>
+    </>
   );
 }
