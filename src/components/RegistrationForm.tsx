@@ -266,7 +266,8 @@ export default function RegistrationForm() {
               {/* <div className="w-16 h-16 bg-blue-600 rounded-full flex outline outline-4 outline-black items-center justify-center text-2xl font-bold mb-4 z-10 -mb-8">B</div> */}
               <div className="bg-white p-4 rounded-xl shadow-lg pt-10">
                 <h3 className="text-black font-semibold text-lg mb-2">Bharath</h3>
-                <img 
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="/payment-qr.jpg" 
                   alt="Payment QR" 
                   className="w-48 h-48 object-cover rounded shadow-sm mx-auto"
@@ -286,6 +287,7 @@ export default function RegistrationForm() {
                 
                 {screenshotPreview ? (
                   <div className="absolute inset-0 z-10 w-full h-full">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={screenshotPreview} alt="Screenshot preview" className="w-full h-full object-contain bg-black/80 backdrop-blur-sm" />
                   </div>
                 ) : (

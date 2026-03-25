@@ -11,7 +11,7 @@ export default function OfflineRegistrationsPage() {
       <div className="relative z-10 max-w-5xl mx-auto px-4 py-8 md:py-16">
         <div className="text-center mb-8 md:mb-12">
           <h1 className="text-3xl md:text-5xl lg:text-7xl font-extrabold tracking-tight text-white mb-4">
-            ZENTHORIX <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700">'25</span>
+            ZENTHORIX <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700">&apos;25</span>
           </h1>
           <p className="text-neutral-400 text-base md:text-xl max-w-2xl mx-auto px-4 font-medium tracking-wide">
             OFFLINE DESK REGISTRATION

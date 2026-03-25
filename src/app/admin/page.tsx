@@ -7,6 +7,8 @@ interface UserRecord {
   id: string;
   name: string;
   collegeName: string;
+  year: string;
+  department?: string;
   phoneNo: string;
   ticketId: string;
   timestamp: string;
@@ -106,7 +108,7 @@ export default function AdminDashboard() {
         .then(data => data.success && setAllUsers(data.all))
         .catch(() => toast.error("Failed to load global ledger"));
     }
-  }, [activeTab, isLoggedIn]);
+  }, [activeTab, isLoggedIn, email, password]);
 
 
   // Phase 5 Bulk Verification Handlers
