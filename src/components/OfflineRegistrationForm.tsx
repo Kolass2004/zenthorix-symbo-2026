@@ -15,9 +15,9 @@ const formSchema = z.object({
   year: z.enum(["I-YEAR", "II-YEAR", "III-YEAR", "IV-year"], {
     message: "Please select your year",
   }),
-  eventPair1: z.enum(["Paper Presentation", "E-Sports", "None"]),
-  eventPair2: z.enum(["Technical quiz", "Meme creation", "None"]),
-  eventPair3: z.enum(["Code debug", "Connection", "None"]),
+  eventPair1: z.enum(["Paper Pulse", "Roast Battle", "None"]),
+  eventPair2: z.enum(["Quiztronix", "Matching Matrix", "None"]),
+  eventPair3: z.enum(["404 Error Code", "Elite Gamerz", "None"]),
   greenWave: z.enum(["Yes", "No"]),
 });
 
@@ -86,13 +86,16 @@ export default function OfflineRegistrationForm() {
       <div className="bg-red-950/30 border border-red-900/50 rounded-xl md:rounded-2xl p-5 md:p-6 mb-6 md:mb-8 text-neutral-300 space-y-2 md:space-y-3">
         <h3 className="text-xl font-bold text-white mb-4 flex items-center">
           <svg className="w-6 h-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          Offline/Pending Registration
+          Important Instructions
         </h3>
-        <p className="text-sm md:text-base">
-          This form skips the automated AI screenshot verification. Your ticket will remain in <strong className="text-red-400">PENDING</strong> state until an event administrator manually verifies the cash/transfer. No email will be dispatched until verified.
-        </p>
+        <ul className="list-disc list-inside space-y-2 ml-2 text-sm md:text-base">
+          <li>Food, refreshments, and a registration kit will be provided for all participants.</li>
+          <li>The registration fee is <strong className="text-white">₹200 per head</strong>.</li>
+          <li>Participants must bring their college ID card for verification.</li>
+          <li>Participants should follow the instructions of the event coordinators and maintain discipline.</li>
+        </ul>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
@@ -179,7 +182,7 @@ export default function OfflineRegistrationForm() {
             <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
               <label className="text-sm font-medium text-neutral-300 block mb-4">Event Pair 1 *</label>
               <div className="space-y-3">
-                {["Paper Presentation", "E-Sports", "None"].map((opt) => (
+                {["Paper Pulse", "Roast Battle", "None"].map((opt) => (
                   <label key={opt} className="flex items-center space-x-3 cursor-pointer group">
                     <input type="radio" value={opt} {...register("eventPair1")} className="w-4 h-4 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
                     <span className="text-neutral-300 group-hover:text-white transition-colors">{opt}</span>
@@ -191,7 +194,7 @@ export default function OfflineRegistrationForm() {
             <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
               <label className="text-sm font-medium text-neutral-300 block mb-3 md:mb-4">Event Pair 2 *</label>
               <div className="space-y-2 md:space-y-3">
-                {["Technical quiz", "Meme creation", "None"].map((opt) => (
+                {["Quiztronix", "Matching Matrix", "None"].map((opt) => (
                   <label key={opt} className="flex items-center space-x-3 cursor-pointer group">
                     <input type="radio" value={opt} {...register("eventPair2")} className="w-4 h-4 md:w-5 md:h-5 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
                     <span className="text-neutral-300 md:text-base text-sm group-hover:text-white transition-colors">{opt}</span>
@@ -203,7 +206,7 @@ export default function OfflineRegistrationForm() {
             <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
               <label className="text-sm font-medium text-neutral-300 block mb-3 md:mb-4">Event Pair 3 *</label>
               <div className="space-y-2 md:space-y-3">
-                {["Code debug", "Connection", "None"].map((opt) => (
+                {["404 Error Code", "Elite Gamerz", "None"].map((opt) => (
                   <label key={opt} className="flex items-center space-x-3 cursor-pointer group">
                     <input type="radio" value={opt} {...register("eventPair3")} className="w-4 h-4 md:w-5 md:h-5 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
                     <span className="text-neutral-300 md:text-base text-sm group-hover:text-white transition-colors">{opt}</span>
@@ -241,15 +244,15 @@ export default function OfflineRegistrationForm() {
                 </svg>
                 Creating offline entry...
               </>
-            ) : "Submit Registration As Pending"}
+            ) : "Submit Registration"}
           </button>
         </div>
 
         {/* Modal Overlay */}
         {modalState !== 'idle' && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => modalState === 'error' && setModalState('idle')}></div>
-            <div className="relative bg-[#111] border border-neutral-800 rounded-3xl p-8 max-w-sm w-full shadow-2xl flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onClick={() => modalState === 'error' && setModalState('idle')}></div>
+            <div className="relative bg-[#111] border border-neutral-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
               {modalState === 'submitting' && (
                 <>
                   <svg className="animate-spin h-16 w-16 text-red-600 mb-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

@@ -329,9 +329,9 @@ export default function RegistrationForm() {
         </div>
         {/* Modal Overlay */}
         {modalState !== 'idle' && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => modalState === 'error' && setModalState('idle')}></div>
-            <div className="relative bg-[#111] border border-neutral-800 rounded-3xl p-8 max-w-sm w-full shadow-2xl flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onClick={() => modalState === 'error' && setModalState('idle')}></div>
+            <div className="relative bg-[#111] border border-neutral-800 rounded-3xl p-6 sm:p-8 max-w-sm w-full max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col items-center text-center animate-in fade-in zoom-in duration-300">
               {modalState === 'verifying' && (
                 <>
                   <svg className="animate-spin h-16 w-16 text-red-600 mb-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

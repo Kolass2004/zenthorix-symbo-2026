@@ -46,6 +46,17 @@ export default function AdminDashboard() {
   // Phase 5 Bulk Selection State
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
 
+  // Local Storage Autologin
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("zenthorix_admin_email");
+    const savedPass = localStorage.getItem("zenthorix_admin_pass");
+    if (savedEmail && savedPass) {
+      setEmail(savedEmail);
+      setPassword(savedPass);
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   // Authenticate
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,6 +71,8 @@ export default function AdminDashboard() {
       const data = await response.json();
       if (response.ok) {
         setIsLoggedIn(true);
+        localStorage.setItem("zenthorix_admin_email", email);
+        localStorage.setItem("zenthorix_admin_pass", password);
         setPendingUsers(data.pending);
         toast.success("Authentication successful");
       } else {
@@ -73,12 +86,26 @@ export default function AdminDashboard() {
   };
 
   const reSyncData = () => {
+      if (!email || !password) return;
       fetch("/api/admin/stats", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password })})
         .then(res => res.json()).then(data => data.success && setStats(data.stats));
       fetch("/api/admin/pending", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password })})
         .then(res => res.json()).then(data => data.success && setPendingUsers(data.pending));
       fetch("/api/admin/all", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, password })})
         .then(res => res.json()).then(data => data.success && setAllUsers(data.all));
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("zenthorix_admin_email");
+    localStorage.removeItem("zenthorix_admin_pass");
+    setIsLoggedIn(false);
+    setEmail("");
+    setPassword("");
+    setStats(null);
+    setPendingUsers([]);
+    setAllUsers([]);
+    setSelectedTickets([]);
+    toast.success("Logged out securely");
   };
 
   // Fetch Logic based on active tab
@@ -239,15 +266,23 @@ export default function AdminDashboard() {
             </h1>
             <p className="text-neutral-400 mt-2">Manage all online uploads and hard-cash transactions seamlessly.</p>
           </div>
-          <button 
-            onClick={() => {
-              reSyncData();
-              toast.success("Synchronized from Firestore", { icon: "🔄" });
-            }}
-            className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg transition-colors border border-neutral-700 text-sm font-medium"
-          >
-            Force Sync Data
-          </button>
+          <div className="flex gap-2">
+            <button 
+              onClick={() => {
+                reSyncData();
+                toast.success("Synchronized from Firestore", { icon: "🔄" });
+              }}
+              className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg transition-colors border border-neutral-700 text-sm font-medium"
+            >
+              Force Sync Data
+            </button>
+            <button 
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-900/30 hover:bg-red-900/60 text-red-500 rounded-lg transition-colors border border-red-900/50 text-sm font-medium"
+            >
+              Logout
+            </button>
+          </div>
         </div>
 
         {/* 3-Tab Navigation System */}
@@ -256,19 +291,19 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('stats')} 
             className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-bold text-sm md:text-base transition-colors ${activeTab === 'stats' ? 'bg-red-600 text-white shadow-lg shadow-red-600/20' : 'bg-transparent text-neutral-400 hover:text-white hover:bg-neutral-800'}`}
           >
-            📊 Homepage Stats
+          Home
           </button>
           <button 
             onClick={() => setActiveTab('pending')} 
             className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-bold text-sm md:text-base transition-colors ${activeTab === 'pending' ? 'bg-red-600 text-white shadow-lg shadow-red-600/20' : 'bg-transparent text-neutral-400 hover:text-white hover:bg-neutral-800'}`}
           >
-            🕒 Pending Offline
+          Pending Offline Registrations
           </button>
           <button 
             onClick={() => setActiveTab('all')} 
             className={`flex-1 min-w-[120px] px-4 py-3 rounded-lg font-bold text-sm md:text-base transition-colors ${activeTab === 'all' ? 'bg-red-600 text-white shadow-lg shadow-red-600/20' : 'bg-transparent text-neutral-400 hover:text-white hover:bg-neutral-800'}`}
           >
-            ✅ Online / Verified
+             Online / Verified
           </button>
         </div>
 
@@ -278,7 +313,7 @@ export default function AdminDashboard() {
             {/* Massive Revenue Block */}
             <div className="col-span-1 md:col-span-2 lg:col-span-3 bg-gradient-to-br from-red-900/40 to-black border border-red-900/50 rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between">
               <div>
-                <p className="text-red-400 font-bold uppercase tracking-widest text-sm mb-2">Total Gross Revenue</p>
+                <p className="text-red-400 font-bold uppercase tracking-widest text-sm mb-2">Total Collected Amount Both Online and Offline</p>
                 <h2 className="text-5xl md:text-7xl font-black text-white">₹{stats.totalRevenue.toLocaleString()}</h2>
                 <p className="text-neutral-400 mt-3 text-sm">Calculated exclusively from {stats.totalValidAndPaid} paid transactions at ₹200 / head.</p>
               </div>
@@ -289,7 +324,7 @@ export default function AdminDashboard() {
 
             {/* Standard Metrics */}
             <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-6">
-              <p className="text-neutral-400 font-medium text-sm mb-1">Total Authorized Scale</p>
+              <p className="text-neutral-400 font-medium text-sm mb-1">Total Verified Students</p>
               <h3 className="text-4xl font-bold text-white mb-4">{stats.totalValidAndPaid}</h3>
               <div className="h-2 w-full bg-neutral-800 rounded-full overflow-hidden">
                 <div className="h-full bg-green-500" style={{ width: '100%' }}></div>
@@ -298,9 +333,11 @@ export default function AdminDashboard() {
 
             <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-6 relative overflow-hidden">
               <div className="absolute right-[-20%] top-[-20%] w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
-              <p className="text-neutral-400 font-medium text-sm mb-1">Digital Processing</p>
+              <p className="text-neutral-400 font-medium text-sm mb-1">Online Registrations</p>
               <h3 className="text-4xl font-bold text-white mb-4">{stats.totalOnline}</h3>
-              <p className="text-xs text-blue-400">Scanned instantly by Gemini AI</p>
+               <div className="h-2 w-full bg-neutral-800 rounded-full overflow-hidden">
+                <div className="h-full bg-blue-500" style={{ width: '100%' }}></div>
+              </div>
             </div>
 
             <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-6 relative overflow-hidden">
@@ -363,8 +400,8 @@ export default function AdminDashboard() {
                            />
                         </th>
                         <th className="p-4 whitespace-nowrap">Ticket ID</th>
-                        <th className="p-4">Demographics</th>
-                        <th className="p-4">Events Map</th>
+                        <th className="p-4">Student Details</th>
+                        <th className="p-4">Events Selected</th>
                         <th className="p-4 whitespace-nowrap">Timestamp</th>
                       </tr>
                     </thead>
