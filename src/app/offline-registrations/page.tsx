@@ -1,4 +1,9 @@
 import OfflineRegistrationForm from "@/components/OfflineRegistrationForm";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Offline Desk",
+};
 
 export default function OfflineRegistrationsPage() {
   return (
