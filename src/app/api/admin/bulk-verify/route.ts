@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/firebase/server";
 import { sendTicketEmail } from "@/lib/email";
 import { appendToGoogleSheet } from "@/lib/google-docs";
+import { waitUntil } from "@vercel/functions";
+import * as admin from "firebase-admin";
 
 // Background Queue Processor
 async function processQueue(validTickets: any[], adminEmail: string) {
@@ -101,10 +103,12 @@ export async function POST(req: Request) {
     }
     await batch.commit();
 
-    // Step 3: Spawn Non-Blocking Background Queue
-    processQueue([...validTickets], email).catch(err => {
-        console.error("Queue execution failed globally:", err);
-    });
+    // Step 3: Spawn Non-Blocking Background Queue with Vercel's waitUntil
+    waitUntil(
+      processQueue([...validTickets], email).catch(err => {
+          console.error("Queue execution failed globally:", err);
+      })
+    );
 
     // Step 4: Return Immediately 
     return NextResponse.json({ 
