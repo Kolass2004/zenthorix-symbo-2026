@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 interface UserRecord {
   id: string;
   name: string;
+  email: string;
   collegeName: string;
   year: string;
   department?: string;
@@ -18,6 +19,8 @@ interface UserRecord {
   greenWave: string;
   provider?: string;
   status?: string;
+  upiId?: string;
+  imageUrl?: string;
 }
 
 interface StatsData {
@@ -42,6 +45,10 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<StatsData | null>(null);
   const [pendingUsers, setPendingUsers] = useState<UserRecord[]>([]);
   const [allUsers, setAllUsers] = useState<UserRecord[]>([]);
+  
+  // Search & Modal State
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedUserModal, setSelectedUserModal] = useState<UserRecord | null>(null);
   
   // Phase 5 Bulk Selection State
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
@@ -206,6 +213,15 @@ export default function AdminDashboard() {
       setIsRejectingState(false);
     }
   };
+
+  const filteredAllUsers = allUsers.filter(user => {
+    const q = searchQuery.toLowerCase();
+    return (
+      user.name.toLowerCase().includes(q) ||
+      user.email?.toLowerCase().includes(q) ||
+      user.ticketId.toLowerCase().includes(q)
+    );
+  });
 
   // Login Screen
   if (!isLoggedIn) {
@@ -470,8 +486,29 @@ export default function AdminDashboard() {
 
         {/* TAB 3: ONLINE / VERIFIED LEDGER */}
         {activeTab === 'all' && (
-          <div className="bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden animate-in fade-in duration-500">
-            <div className="overflow-x-auto">
+          <div className="animate-in fade-in duration-500 space-y-4">
+            
+            {/* Search Bar */}
+            <div className="bg-neutral-900 border border-neutral-800 p-4 rounded-3xl flex items-center shadow-lg transition-colors focus-within:border-red-500/50">
+              <svg className="w-6 h-6 text-neutral-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input 
+                type="text"
+                placeholder="Search by name, email, or ticket ID..."
+                className="bg-transparent border-none w-full text-white focus:outline-none focus:ring-0 placeholder-neutral-500"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              {searchQuery && (
+                <button onClick={() => setSearchQuery("")} className="text-neutral-500 hover:text-white transition-colors">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              )}
+            </div>
+
+            <div className="bg-neutral-900 border border-neutral-800 rounded-3xl overflow-hidden shadow-2xl">
+              <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-black/50 border-b border-neutral-800 text-neutral-400 text-sm font-medium">
@@ -483,13 +520,13 @@ export default function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-neutral-800/50">
-                  {allUsers.length === 0 ? (
+                  {filteredAllUsers.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="p-8 text-center text-neutral-500">No verified registrations found in ledger.</td>
+                      <td colSpan={5} className="p-8 text-center text-neutral-500">No registrations match your search.</td>
                     </tr>
                   ) : null}
-                  {allUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-neutral-800/30 transition-colors">
+                  {filteredAllUsers.map((user) => (
+                    <tr key={user.id} onClick={() => setSelectedUserModal(user)} className="cursor-pointer hover:bg-neutral-800/30 transition-colors">
                       <td className="p-4 font-mono text-white text-sm whitespace-nowrap border-l-4 border-transparent hover:border-red-500">{user.ticketId}</td>
                       <td className="p-4">
                         <p className="font-bold text-white">{user.name}</p>
@@ -510,8 +547,75 @@ export default function AdminDashboard() {
               </table>
             </div>
           </div>
+        </div>
         )}
       </div>
+
+      {/* User Details Modal */}
+      {selectedUserModal && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onClick={() => setSelectedUserModal(null)}></div>
+          <div className="relative bg-neutral-900 border border-neutral-700 rounded-3xl p-6 md:p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col md:flex-row gap-6 animate-in fade-in zoom-in duration-300">
+            <button onClick={() => setSelectedUserModal(null)} className="absolute top-4 right-4 z-10 text-neutral-500 hover:text-white transition-colors bg-black/50 rounded-full p-1">
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            
+            <div className="flex-1 space-y-4">
+               {/* Modal Header */}
+               <div className="mb-6">
+                 <h2 className="text-3xl font-bold text-white mb-1">{selectedUserModal.name}</h2>
+                 <p className="text-sm text-neutral-400 font-mono tracking-wider">{selectedUserModal.ticketId}</p>
+                 <div className="mt-4">
+                    {selectedUserModal.status === 'verified' ? (
+                       <span className="bg-purple-500/10 text-purple-400 border border-purple-500/20 px-3 py-1 rounded text-xs font-bold uppercase tracking-wider">OFFLINE VERIFIED</span>
+                    ) : (
+                       <span className="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1 rounded text-xs font-bold uppercase tracking-wider">ONLINE PAYMENT ID: {selectedUserModal.upiId || "N/A"}</span>
+                    )}
+                 </div>
+               </div>
+
+               <div className="grid grid-cols-2 gap-4 text-sm">
+                 <div className="bg-black/50 p-3 flex flex-col justify-center rounded-xl border border-neutral-800">
+                   <p className="text-neutral-500 text-xs uppercase mb-1">Email</p>
+                   <p className="text-neutral-200 font-medium break-all">{selectedUserModal.email || "Offline"}</p>
+                 </div>
+                 <div className="bg-black/50 p-3 flex flex-col justify-center rounded-xl border border-neutral-800">
+                   <p className="text-neutral-500 text-xs uppercase mb-1">Phone</p>
+                   <p className="text-neutral-200 font-medium">{selectedUserModal.phoneNo}</p>
+                 </div>
+                 <div className="bg-black/50 p-3 rounded-xl border border-neutral-800 col-span-2">
+                   <p className="text-neutral-500 text-xs uppercase mb-1">Institution</p>
+                   <p className="text-neutral-200 font-medium">{selectedUserModal.collegeName} ({selectedUserModal.year})</p>
+                 </div>
+               </div>
+               
+               <div className="mt-6 border-t border-neutral-800 pt-6">
+                 <h3 className="text-white font-semibold mb-3">Event Demographics</h3>
+                 <div className="flex flex-col space-y-2">
+                    <span className="bg-neutral-800/80 px-3 py-2 rounded-lg text-sm text-neutral-300">{selectedUserModal.eventPair1}</span>
+                    <span className="bg-neutral-800/80 px-3 py-2 rounded-lg text-sm text-neutral-300">{selectedUserModal.eventPair2}</span>
+                    <span className="bg-neutral-800/80 px-3 py-2 rounded-lg text-sm text-neutral-300">{selectedUserModal.eventPair3}</span>
+                    {selectedUserModal.greenWave === "Yes" && <span className="bg-green-500/10 text-green-400 border border-green-500/20 px-3 py-2 rounded-lg text-sm font-semibold">+ Opted for GreenWave</span>}
+                 </div>
+               </div>
+            </div>
+            
+            {/* Right side: Payment Image */}
+            <div className="md:w-1/2 flex items-center justify-center bg-black/40 rounded-2xl border border-neutral-800 overflow-hidden relative min-h-[300px]">
+               {selectedUserModal.imageUrl && selectedUserModal.imageUrl !== "offline" ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={selectedUserModal.imageUrl} alt="Payment Screenshot" className="w-full h-full object-contain absolute inset-0" />
+               ) : (
+                  <div className="text-center p-6 flex flex-col items-center">
+                    <span className="text-6xl mb-4 border border-neutral-700 w-24 h-24 rounded-full flex items-center justify-center bg-black/50 text-neutral-600">💵</span>
+                    <p className="text-neutral-400 font-medium">Offline Physical Payment</p>
+                    <p className="text-xs text-neutral-600 mt-2">Cash or direct transfer directly to host on-site.</p>
+                  </div>
+               )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

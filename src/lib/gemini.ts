@@ -37,7 +37,7 @@ export async function extractPaymentDetailsFromImage(base64Image: string): Promi
       },
     ];
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
     const result = await model.generateContent([prompt, ...imageParts]);
     let text = (await result.response).text().trim();
 
