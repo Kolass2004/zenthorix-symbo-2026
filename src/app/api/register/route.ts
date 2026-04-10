@@ -84,6 +84,9 @@ export async function POST(req: Request) {
     // 3. Generate Ticket ID
     const ticketId = generateTicketId();
 
+    // 3.5. Upload image to ImgBB for permanent free hosting
+    const imageUrl = await uploadToImgBB(screenshot);
+
     const registrationData = {
       name,
       email,
@@ -97,14 +100,12 @@ export async function POST(req: Request) {
       greenWave,
       upiId,
       ticketId,
+      imageUrl: imageUrl || "Upload Failed",
       timestamp: new Date().toISOString(),
     };
 
     // 4. Save to Firestore
     await db.collection("registrations").add(registrationData);
-
-    // 4.5. Upload image to ImgBB for permanent free hosting
-    const imageUrl = await uploadToImgBB(screenshot);
 
     // 5. Save to Google Sheets
     // Columns: Timestamp, Ticket ID, Name, Email, College, Phone, Department, Year, Pair 1, Pair 2, Pair 3, GreenWave, UPI, Provider, ScreenshotUrl
