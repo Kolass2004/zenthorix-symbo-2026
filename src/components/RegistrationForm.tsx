@@ -220,7 +220,7 @@ export default function RegistrationForm() {
             <div className="bg-black/50 p-4 md:p-6 rounded-xl border border-neutral-800/50">
               <label className="text-sm font-medium text-neutral-300 block mb-3 md:mb-4">Event Pair 2 *</label>
               <div className="space-y-2 md:space-y-3">
-                {["Quiztronix", "matching matrix", "None"].map((opt) => (
+                {["Quiztronix", "Matching Matrix", "None"].map((opt) => (
                   <label key={opt} className="flex items-center space-x-3 cursor-pointer group">
                     <input type="radio" value={opt} {...register("eventPair2")} className="w-4 h-4 md:w-5 md:h-5 text-red-600 bg-neutral-900 border-neutral-700 focus:ring-red-600 focus:ring-2" />
                     <span className="text-neutral-300 md:text-base text-sm group-hover:text-white transition-colors">{opt}</span>
